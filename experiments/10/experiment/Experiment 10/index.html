@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Information</title>
+
+    <!-- jQuery Library -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef2f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 700px;
+            margin: 60px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        .buttons {
+            margin: 25px 0;
+        }
+
+        button {
+            padding: 12px 22px;
+            margin: 8px;
+            border: none;
+            border-radius: 7px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #fetchBtn {
+            background: #27ae60;
+        }
+
+        #getBtn {
+            background: #8e44ad;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        #output {
+            margin-top: 25px;
+        }
+
+        .student-card {
+            text-align: left;
+            background: #f7f9fb;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #3498db;
+        }
+
+        .student-card h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .student-card p {
+            font-size: 17px;
+            margin: 12px 0;
+        }
+
+        .method {
+            color: #8e44ad;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>🎓 Student Information</h1>
+
+        <p>Load student information from JSON file</p>
+
+        <div class="buttons">
+
+            <!-- Fetch Button -->
+            <button id="fetchBtn">
+                Load Using fetch()
+            </button>
+
+            <!-- jQuery GET Button -->
+            <button id="getBtn">
+                Load Using $.get()
+            </button>
+
+        </div>
+
+        <div id="output">
+            <p>Click a button to load student information.</p>
+        </div>
+
+    </div>
+
+
+    <script>
+
+        // ============================================
+        // 1. LOAD DATA USING FETCH()
+        // ============================================
+
+        $("#fetchBtn").click(function () {
+
+            fetch("student.json")
+
+                .then(response => {
+
+                    if (!response.ok) {
+                        throw new Error("JSON file not found");
+                    }
+
+                    return response.json();
+                })
+
+                .then(data => {
+
+                    $("#output").html(`
+
+                        <div class="student-card">
+
+                            <h2>Student Details</h2>
+
+                            <p>
+                                <b>Name:</b> ${data.name}
+                            </p>
+
+                            <p>
+                                <b>PRN:</b> ${data.prn}
+                            </p>
+
+                            <p>
+                                <b>Course:</b> ${data.course}
+                            </p>
+
+                            <p>
+                                <b>Year:</b> ${data.year}
+                            </p>
+
+                            <p>
+                                <b>College:</b> ${data.college}
+                            </p>
+
+                            <p>
+                                <b>Email:</b> ${data.email}
+                            </p>
+
+                            <p>
+                                <b>Loaded Using:</b>
+                                <span class="method">fetch()</span>
+                            </p>
+
+                        </div>
+
+                    `);
+
+                })
+
+                .catch(error => {
+
+                    $("#output").html(`
+                        <p>❌ Error loading student data.</p>
+                        <p>Check whether student.json is in the correct folder.</p>
+                    `);
+
+                    console.log(error);
+
+                });
+
+        });
+
+
+        // ============================================
+        // 2. LOAD DATA USING $.get()
+        // ============================================
+
+        $("#getBtn").click(function () {
+
+            $.get("student.json", function (data) {
+
+                $("#output").html(`
+
+                    <div class="student-card">
+
+                        <h2>Student Details</h2>
+
+                        <p>
+                            <b>Name:</b> ${data.name}
+                        </p>
+
+                        <p>
+                            <b>PRN:</b> ${data.prn}
+                        </p>
+
+                        <p>
+                            <b>Course:</b> ${data.course}
+                        </p>
+
+                        <p>
+                            <b>Year:</b> ${data.year}
+                        </p>
+
+                        <p>
+                            <b>College:</b> ${data.college}
+                        </p>
+
+                        <p>
+                            <b>Email:</b> ${data.email}
+                        </p>
+
+                        <p>
+                            <b>Loaded Using:</b>
+                            <span class="method">$.get()</span>
+                        </p>
+
+                    </div>
+
+                `);
+
+            })
+
+            .fail(function () {
+
+                $("#output").html(`
+                    <p>❌ Error loading student data.</p>
+                    <p>Check whether student.json is in the correct folder.</p>
+                `);
+
+            });
+
+        });
+
+    </script>
+
+</body>
+
+</html>
