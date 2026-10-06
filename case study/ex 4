@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATM PIN Verification</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f2f2f2;
+}
+
+.container{
+    width:400px;
+    margin:80px auto;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    text-align:center;
+    box-shadow:0 0 10px gray;
+}
+
+h2{
+    color:#003366;
+}
+
+input{
+    width:80%;
+    padding:10px;
+    margin:15px;
+}
+
+button{
+    padding:10px 20px;
+    background:#003366;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0055aa;
+}
+
+#result{
+    margin-top:20px;
+    font-size:18px;
+    font-weight:bold;
+    color:green;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>ATM Card PIN Verification</h2>
+
+<input type="password" id="pin" placeholder="Enter 4-digit PIN">
+
+<br>
+
+<button onclick="verifyPIN()">Verify PIN</button>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+// Function Declaration
+function isPalindrome(pin){
+    let reverse = pin.split("").reverse().join("");
+    return pin === reverse;
+}
+
+// Function Expression
+const validatePIN = function(pin){
+    return /^\d{4}$/.test(pin);
+};
+
+// Arrow Function
+const displayResult = (message) => {
+    document.getElementById("result").innerHTML = message;
+};
+
+// Scope Example
+function verifyPIN(){
+
+    let pin = document.getElementById("pin").value;
+
+    if(!validatePIN(pin)){
+        displayResult("Enter a valid 4-digit PIN.");
+        return;
+    }
+
+    // Closure Example
+    function securityCheck(){
+
+        let bankName = "SIT Bank";
+
+        return function(){
+
+            if(isPalindrome(pin)){
+                displayResult(bankName + "<br>PIN is a Palindrome.<br>Verification Successful.");
+            }
+            else{
+                displayResult(bankName + "<br>PIN is NOT a Palindrome.<br>Verification Successful.");
+            }
+
+        };
+
+    }
+
+    let check = securityCheck();
+    check();
+
+}
+
+</script>
+
+</body>
+</html>
