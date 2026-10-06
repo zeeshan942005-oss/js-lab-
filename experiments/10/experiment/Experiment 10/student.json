@@ -1,0 +1,66 @@
+{
+    "name": "Ayush Katekhaye",
+    "prn": "24070521161",
+    "course": "B.Tech Computer Science and Engineering",
+    "year": "3rd Year",
+    "college": "Symbiosis Institute of Technology, Nagpur",
+    "email": "ayush@example.com"
+
+
+    
+    "name": "Chitrash Phalkey",
+    "prn": "25070521183",
+    "course": "B.Tech Computer Science and Engineering",
+    "year": "2nd Year",
+    "college": "Symbiosis Institute of Technology, Nagpur",
+    "email": "chitrash@example.com"
+
+    "name": "Shantanu Jumbale",
+    "prn": "24070521134",
+    "course": "B.Tech Computer Science and Engineering",
+    "year": "3rd Year", 
+    "college" : "Symbiosis Institute of Technology, Nagpur",
+    "email": "Shantanu@example.com"
+
+[
+    {
+        "name": "Ayush Katekhaye",
+        "prn": "24070521161",
+        "course": "B.Tech Computer Science and Engineering",
+        "year": "3rd Year",
+        "college": "Symbiosis Institute of Technology, Nagpur",
+        "email": "ayush@example.com"
+    },
+    {
+        "name": "Chitrash Phalkey",
+        "prn": "25070521183",
+        "course": "B.Tech Computer Science and Engineering",
+        "year": "2nd Year",
+        "college": "Symbiosis Institute of Technology, Nagpur",
+        "email": "chitrash@example.com"
+    },
+    {
+        "name": "Shantanu Jumbale",
+        "prn": "24070521134",
+        "course": "B.Tech Computer Science and Engineering",
+        "year": "3rd Year",
+        "college": "Symbiosis Institute of Technology, Nagpur",
+        "email": "Shantanu@example.com"
+    },
+    {
+        "name": "Parth Jirapure",
+        "prn": "24070521242",
+        "course": "B.Tech Computer Science and Engineering",
+        "year": "3rd Year",
+        "college": "Symbiosis Institute of Technology, Nagpur",
+        "email": "Parth@example.com"
+    },
+    {
+        "name": "Prathm Khetan",
+        "prn": "24070521145",
+        "course": "B.Tech Computer Science and Engineering",
+        "year": "3rd Year",
+        "college": "Symbiosis Institute of Technology, Nagpur",
+        "email": "Pratham@example.com"
+    }
+]
