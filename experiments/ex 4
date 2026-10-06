@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Palindrome Checker (Functions + Scope + Closures + Try/Catch)</title>
+
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f6f7fb;
+      margin: 0;
+      padding: 28px;
+      color: #111827;
+    }
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.04);
+    }
+    h1 { margin: 0 0 12px; font-size: 20px; }
+    label {
+      display: block;
+      font-size: 13px;
+      margin: 10px 0 6px;
+      color: #374151;
+      font-weight: 700;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      outline: none;
+      box-sizing: border-box;
+      background: #fff;
+    }
+    input:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      align-items: center;
+    }
+    button {
+      padding: 11px 14px;
+      border: 0;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 800;
+      background: #2563eb;
+      color: #fff;
+      flex: 1;
+      min-width: 180px;
+    }
+    button.secondary { background: #111827; }
+    button:hover { filter: brightness(0.95); }
+    .msg {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px dashed #d1d5db;
+      background: #fafafa;
+      min-height: 96px;
+      white-space: pre-wrap;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    .small {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #6b7280;
+      line-height: 1.4;
+    }
+    @media (max-width: 640px) {
+      .row { grid-template-columns: 1fr; }
+      button { min-width: 100%; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Palindrome Checker</h1>
+
+      <label for="text">Enter text</label>
+      <input id="text" type="text" placeholder="e.g., racecar / A man, a plan, a canal: Panama" />
+
+      <div class="row">
+        <div>
+          <label for="mode">Normalization mode</label>
+          <input id="mode" type="text" value="ignore-nonletters" />
+          <div class="small">Type: ignore-nonletters (default) or strict</div>
+        </div>
+        <div>
+          <label for="minLen">Min length (validation)</label>
+          <input id="minLen" type="number" min="0" step="1" value="1" />
+          <div class="small">If input is shorter than this, it throws and is caught.</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="checkBtn" type="button">Check Palindrome</button>
+        <button class="secondary" id="resetBtn" type="button">Reset</button>
+      </div>
+
+      <div class="msg" id="output">Enter text and click “Check Palindrome”.</div>
+
+      <div class="small">
+        Open DevTools console to see logs for function types, scope, closures, and try/catch.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const outputEl = $("output");
+
+    function setOutput(text, ok) {
+      outputEl.textContent = text;
+      outputEl.style.borderColor = ok ? "#86efac" : "#fca5a5";
+      outputEl.style.background = ok ? "#ecfdf5" : "#fef2f2";
+    }
+
+    function isPalindromeNormalized(normalized) {
+      const s = normalized;
+      let left = 0;
+      let right = s.length - 1;
+
+      while (left < right) {
+        if (s[left] !== s[right]) return false;
+        left++;
+        right--;
+      }
+      return true;
+    }
+
+    const normalize = (input, mode) => {
+      if (mode === "strict") return input;
+      const lower = input.toLowerCase();
+      return lower.replace(/[^a-z0-9]/g, "");
+    };
+
+    function createChecker(mode) {
+      const capturedMode = mode;
+
+      function checker(text) {
+        const normalized = normalize(text, capturedMode);
+        const result = isPalindromeNormalized(normalized);
+
+        return { normalized, result, mode: capturedMode };
+      }
+
+      return checker;
+    }
+
+    (function demoFunctionTypesScopeClosures() {
+      console.log("---- Function Types + Scope + Closures demo ----");
+
+      var scopeVar = "var is function-scoped";
+      let scopeLet = "let is block-scoped";
+      const scopeConst = "const is block-scoped constant";
+
+      console.log("scopeVar:", scopeVar);
+      console.log("scopeLet:", scopeLet);
+      console.log("scopeConst:", scopeConst);
+
+      if (true) {
+        let blockLet = "inside block (let)";
+        const blockConst = "inside block (const)";
+        console.log("blockLet:", blockLet);
+        console.log("blockConst:", blockConst);
+      }
+
+      const defaultMode = "ignore-nonletters";
+      const checker = createChecker(defaultMode);
+
+      const closureExample = checker("racecar");
+      console.log("Closure capturedMode:", closureExample.mode);
+      console.log("Closure normalized:", closureExample.normalized);
+      console.log("Closure result:", closureExample.result);
+
+      console.log("---- End demo ----");
+    })();
+
+    $("checkBtn").addEventListener("click", () => {
+      try {
+        const rawText = $("text").value;
+        const minLen = Number($("minLen").value);
+        const mode = ($("mode").value || "ignore-nonletters").trim();
+
+        if (mode !== "ignore-nonletters" && mode !== "strict") {
+          throw new Error("Mode must be 'ignore-nonletters' or 'strict'.");
+        }
+
+        if (!Number.isFinite(minLen) || minLen < 0) {
+          throw new Error("Min length must be a valid number (>= 0).");
+        }
+
+        if ((rawText ?? "").trim().length < minLen) {
+          throw new Error(`Input is shorter than min length (${minLen}).`);
+        }
+
+        const checker = createChecker(mode);
+        const { normalized, result } = checker(rawText);
+
+        const message =
+          `Input: ${rawText}\n` +
+          `Mode: ${mode}\n` +
+          `Normalized: ${normalized}\n\n` +
+          (result
+            ? "✅ It is a palindrome."
+            : "❌ It is NOT a palindrome.");
+
+        console.log("Try block success:", { rawText, mode, minLen, normalized, result });
+        setOutput(message, result);
+      } catch (err) {
+        console.error("Caught error:", err);
+        setOutput(`⚠️ Error: ${err.message}`, false);
+      }
+    });
+
+    $("resetBtn").addEventListener("click", () => {
+      $("text").value = "";
+      $("mode").value = "ignore-nonletters";
+      $("minLen").value = 1;
+      setOutput("Enter text and click “Check Palindrome”.", true);
+      $("text").focus();
+    });
+
+    $("text").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") $("checkBtn").click();
+    });
+  </script>
+</body>
+</html>
