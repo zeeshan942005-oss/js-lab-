@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Billing Calculator (var/let/const + Features)</title>
+
+  <style>
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      background:#f6f7fb;
+      margin:0;
+      padding:28px;
+      color:#111827;
+    }
+    .wrap{
+      max-width: 920px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+    }
+    .card{
+      background:#fff;
+      border:1px solid #e5e7eb;
+      border-radius:14px;
+      padding:18px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.04);
+    }
+    h1{
+      margin:0 0 14px;
+      font-size:20px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    label{
+      display:block;
+      font-size:13px;
+      margin: 8px 0 6px;
+      color:#374151;
+    }
+    input, select{
+      width:100%;
+      padding:10px;
+      border-radius:10px;
+      border:1px solid #d1d5db;
+      outline:none;
+      box-sizing:border-box;
+      background:#fff;
+    }
+    input:focus{
+      border-color:#6366f1;
+      box-shadow:0 0 0 3px rgba(99,102,241,0.15);
+    }
+    button{
+      margin-top:14px;
+      width: 100%;
+      padding: 11px 14px;
+      border:0;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:800;
+      background:#2563eb;
+      color:#fff;
+    }
+    button:hover{ background:#1d4ed8; }
+    .row{
+      display:flex;
+      gap:10px;
+      margin-top:12px;
+      flex-wrap:wrap;
+    }
+    .pill{
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid #e5e7eb;
+      background:#fafafa;
+      font-size:12px;
+      color:#374151;
+      user-select:none;
+    }
+    .result{
+      margin-top:12px;
+      padding:14px;
+      border-radius:12px;
+      border:1px dashed #d1d5db;
+      background:#fafafa;
+      white-space:pre-wrap;
+      font-size:14px;
+      min-height: 120px;
+    }
+    .small{
+      font-size:12px;
+      color:#6b7280;
+      margin-top:10px;
+      line-height:1.4;
+    }
+    .demoBox{
+      margin-top:12px;
+      padding:14px;
+      border-radius:12px;
+      border:1px solid #e5e7eb;
+      background:#fff;
+    }
+    .demoBox h2{
+      margin:0 0 10px;
+      font-size:14px;
+      color:#111827;
+    }
+    .demoCode{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      background:#0b1220;
+      color:#e5e7eb;
+      padding:12px;
+      border-radius:10px;
+      font-size:12px;
+      white-space:pre-wrap;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Billing Calculator</h1>
+
+      <div class="grid">
+        <div>
+          <label for="customerName">Customer Name</label>
+          <input id="customerName" type="text" placeholder="e.g., Sara" />
+        </div>
+
+        <div>
+          <label for="serviceType">Service Type</label>
+          <select id="serviceType">
+            <option value="basic">Basic</option>
+            <option value="standard">Standard</option>
+            <option value="premium">Premium</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="usage">Usage (units)</label>
+          <input id="usage" type="number" min="0" step="1" value="10" />
+        </div>
+
+        <div>
+          <label for="rateOverride">Custom rate (optional)</label>
+          <input id="rateOverride" type="number" min="0" step="0.01" placeholder="Leave blank for default" />
+        </div>
+
+        <div>
+          <label for="taxRate">Tax %</label>
+          <input id="taxRate" type="number" min="0" step="0.01" value="8.5" />
+        </div>
+
+        <div>
+          <label for="discountRate">Discount %</label>
+          <input id="discountRate" type="number" min="0" step="0.01" value="5" />
+        </div>
+      </div>
+
+      <button id="calcBtn" type="button">Calculate Bill</button>
+
+      <div class="row">
+        <div class="pill">Uses var / let / const</div>
+        <div class="pill">Template Literals</div>
+        <div class="pill">Destructuring</div>
+      </div>
+
+      <div class="result" id="result">
+        Enter details and click “Calculate Bill”.
+      </div>
+
+      <div class="small">
+        Open your DevTools Console to see logs demonstrating var/let/const,
+        template literals, and destructuring.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="demoBox">
+        <h2>JS Features Demo (in console)</h2>
+        <div class="demoCode" id="featurePreview"></div>
+      </div>
+      <div class="demoBox">
+        <h2>Billing Formula</h2>
+        <div class="small" style="margin-top:0">
+          <div>Subtotal = usage × rate</div>
+          <div>Discount = Subtotal × (discountRate / 100)</div>
+          <div>AfterDiscount = Subtotal − Discount</div>
+          <div>Total = AfterDiscount × (1 + taxRate / 100)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    const serviceRates = {
+      basic: 12.5,
+      standard: 20,
+      premium: 35
+    };
+
+    function money(n) {
+      return new Intl.NumberFormat(undefined, {
+        style: "currency",
+        currency: "USD"
+      }).format(n);
+    }
+
+    function parseNumOrNull(val) {
+      const trimmed = String(val ?? "").trim();
+      if (!trimmed) return null;
+      const n = Number(trimmed);
+      return Number.isFinite(n) ? n : null;
+    }
+
+    $("featurePreview").textContent = [
+      "var: function-scoped value (demo only)",
+      "let: block-scoped variable (demo)",
+      "const: block-scoped constant (demo)",
+      "Template literals: `Welcome, ${name}`",
+      "Destructuring: const {basic, standard} = serviceRates"
+    ].join("\n");
+
+    $("calcBtn").addEventListener("click", () => {
+      var debugVar = "var-demo";
+      let debugLet = "let-demo";
+      const debugConst = "const-demo";
+
+      console.log("---- var/let/const demo ----");
+      console.log("debugVar (var):", debugVar);
+      console.log("debugLet (let):", debugLet);
+      console.log("debugConst (const):", debugConst);
+
+      debugLet = "let-demo (updated)";
+      console.log("debugLet updated:", debugLet);
+
+      console.log("---- Destructuring demo ----");
+      const { basic, standard, premium } = serviceRates;
+      console.table([{ basic, standard, premium }]);
+
+      console.log("---- Template literal demo ----");
+      const name = $("customerName").value.trim() || "Customer";
+      console.log(`Welcome, ${name}! Now calculating your bill...`);
+
+      const serviceType = $("serviceType").value;
+      const usage = Number($("usage").value);
+      const taxRate = Number($("taxRate").value);
+      const discountRate = Number($("discountRate").value);
+      const customRate = parseNumOrNull($("rateOverride").value);
+
+      const rate = (customRate ?? serviceRates[serviceType]);
+
+      if (!Number.isFinite(usage) || usage < 0) {
+        console.error("Invalid usage.");
+        $("result").textContent = "Please enter a valid usage (0 or more).";
+        return;
+      }
+
+      if (!Number.isFinite(taxRate) || taxRate < 0) {
+        console.error("Invalid tax rate.");
+        $("result").textContent = "Please enter a valid tax % (0 or more).";
+        return;
+      }
+
+      if (!Number.isFinite(discountRate) || discountRate < 0) {
+        console.error("Invalid discount rate.");
+        $("result").textContent = "Please enter a valid discount % (0 or more).";
+        return;
+      }
+
+      const subtotal = usage * rate;
+      const discount = subtotal * (discountRate / 100);
+      const afterDiscount = subtotal - discount;
+      const tax = afterDiscount * (taxRate / 100);
+      const total = afterDiscount + tax;
+
+      console.group("---- Calculation logs ----");
+      console.log("serviceType:", serviceType);
+      console.log("rate:", rate);
+      console.log("usage:", usage);
+      console.log("subtotal:", subtotal);
+      console.log("discount:", discount);
+      console.log("afterDiscount:", afterDiscount);
+      console.log("tax:", tax);
+      console.log("total:", total);
+      console.groupEnd();
+
+      const userSummary = { name, serviceType, usage, rate, taxRate, discountRate };
+      console.table([userSummary]);
+
+      const message = `
+Customer: ${name}
+Service: ${serviceType.charAt(0).toUpperCase() + serviceType.slice(1)}
+Usage: ${usage}
+Rate: ${money(rate)}
+
+Subtotal: ${money(subtotal)}
+Discount (${discountRate}%): -${money(discount)}
+After Discount: ${money(afterDiscount)}
+Tax (${taxRate}%): +${money(tax)}
+
+Total Due: ${money(total)}
+      `.trim();
+
+      $("result").textContent = message;
+
+      console.log("Done. Total Due rendered.");
+      console.log(`var-demo value still accessible: ${debugVar}`);
+    });
+  </script>
+</body>
+</html>
