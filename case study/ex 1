@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>College Department</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, sans-serif;
+        }
+
+        body{
+            background:#f2f2f2;
+        }
+
+        .container{
+            width:70%;
+            margin:40px auto;
+            background:white;
+            padding:20px;
+            border-radius:10px;
+            box-shadow:0 0 10px gray;
+            text-align:center;
+        }
+
+        h1{
+            color:#003366;
+            margin-bottom:10px;
+        }
+
+        h2{
+            color:#006699;
+            margin-bottom:20px;
+        }
+
+        p{
+            margin-bottom:20px;
+        }
+
+        table{
+            width:80%;
+            margin:auto;
+            border-collapse:collapse;
+        }
+
+        table,th,td{
+            border:1px solid black;
+        }
+
+        th{
+            background:#003366;
+            color:white;
+            padding:10px;
+        }
+
+        td{
+            padding:10px;
+        }
+
+        button{
+            margin-top:20px;
+            padding:10px 20px;
+            background:#003366;
+            color:white;
+            border:none;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#0055aa;
+        }
+
+        #studentPage{
+            display:none;
+        }
+    </style>
+</head>
+
+<body onload="welcome()">
+
+<!-- Department Page -->
+<div class="container" id="departmentPage">
+
+    <h1>Symbiosis Institute of Technology, Nagpur</h1>
+    <h2>Computer Science and Engineering Department</h2>
+
+    <p>
+        Welcome to the Computer Science and Engineering Department.
+        We provide quality education in Programming, AI, Data Science,
+        Cyber Security, and Software Development.
+    </p>
+
+    <table>
+        <tr>
+            <th>Department</th>
+            <td>Computer Science and Engineering</td>
+        </tr>
+
+        <tr>
+            <th>HOD</th>
+            <td>Dr. ABC XYZ</td>
+        </tr>
+
+        <tr>
+            <th>Duration</th>
+            <td>4 Years</td>
+        </tr>
+
+        <tr>
+            <th>Degree</th>
+            <td>B.Tech</td>
+        </tr>
+    </table>
+
+    <button onclick="showStudent()">
+        Student Information
+    </button>
+
+</div>
+
+<!-- Student Information Page -->
+<div class="container" id="studentPage">
+
+    <h1>Student Information</h1>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <td>Parth Daware</td>
+        </tr>
+
+        <tr>
+            <th>Roll No</th>
+            <td>230</td>
+        </tr>
+
+        <tr>
+            <th>College</th>
+            <td>SIT Nagpur</td>
+        </tr>
+
+        <tr>
+            <th>Department</th>
+            <td>Computer Science and Engineering</td>
+        </tr>
+
+        <tr>
+            <th>Year</th>
+            <td>Third Year</td>
+        </tr>
+    </table>
+
+    <button onclick="showDepartment()">
+        Back to Department
+    </button>
+
+</div>
+
+<script>
+
+function welcome()
+{
+    alert("Welcome to SIT Nagpur");
+}
+
+function showStudent()
+{
+    document.getElementById("departmentPage").style.display="none";
+    document.getElementById("studentPage").style.display="block";
+}
+
+function showDepartment()
+{
+    document.getElementById("studentPage").style.display="none";
+    document.getElementById("departmentPage").style.display="block";
+}
+
+</script>
+
+</body>
+</html>
