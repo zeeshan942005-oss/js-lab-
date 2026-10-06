@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scholarship Category</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f2f2f2;
+}
+
+.container{
+    width:350px;
+    margin:100px auto;
+    background:white;
+    padding:20px;
+    text-align:center;
+    border-radius:10px;
+    box-shadow:0 0 10px gray;
+}
+
+h2{
+    color:#003366;
+}
+
+input{
+    width:80%;
+    padding:10px;
+    margin:10px 0;
+}
+
+button{
+    padding:10px 20px;
+    background:#003366;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0055aa;
+}
+
+#result{
+    margin-top:20px;
+    font-size:20px;
+    font-weight:bold;
+    color:green;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h2>Scholarship Category</h2>
+
+<input type="number" id="marks" placeholder="Enter Student Marks">
+
+<br>
+
+<button onclick="checkScholarship()">Check Scholarship</button>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+function checkScholarship(){
+
+    let marks = Number(document.getElementById("marks").value);
+    let category="";
+
+    if(marks<0 || marks>100){
+        category="Invalid Marks";
+    }
+    else if(marks>=90){
+        category="Platinum Scholarship";
+    }
+    else if(marks>=75){
+        category="Gold Scholarship";
+    }
+    else if(marks>=60){
+        category="Silver Scholarship";
+    }
+    else if(marks>=40){
+        category="Bronze Scholarship";
+    }
+    else{
+        category="No Scholarship";
+    }
+
+    document.getElementById("result").innerHTML=category;
+
+}
+
+</script>
+
+</body>
+</html>
